@@ -1,30 +1,32 @@
 <template>
   <div id="app">
-    <transition name="fade" mode="out-in">
-      <router-view />
-    </transition>
+    <nav>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </nav>
+    <router-view/>
   </div>
 </template>
 
-<script>
-//EXPORT
-export default {
-  name: "App",
-};
-</script>
-
 <style lang="scss">
-@import "./scss/main.scss";
 #app {
-  min-width: 320px;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.2s ease;
+nav {
+  padding: 30px;
+
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Hello Heroku" />
+    <HelloWorld msg="Hello Heroku 2" />
   </div>
 </template>
 

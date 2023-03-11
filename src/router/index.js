@@ -4,7 +4,7 @@ import Vuelidate from "vuelidate";
 import Welcome from "../views/Welcome.vue";
 import Signup from "../views/Signup.vue";
 import Login from "../views/Login.vue";
-// import Home from "../views/Home.vue";
+import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 Vue.use(Vuelidate);
@@ -25,11 +25,11 @@ const routes = [
     name: "Login",
     component: Login,
   },
-  // {
-  //   path: "/home",
-  //   name: "Home",
-  //   component: Home,
-  // },
+  {
+    path: "/home",
+    name: "Home",
+    component: Home,
+  },
 ];
 
 const router = new VueRouter({

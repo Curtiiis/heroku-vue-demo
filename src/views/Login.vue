@@ -3,15 +3,16 @@
     <ValidBox :validBox="showValidBox" />
     <div class="auth__container">
       <TitleLogo :authType="login" />
-      <div class="error-login" v-show="showErrorLogin">
+      <div class="errorLogin" v-show="showErrorLogin">
         <p>Ce compte a été désactivé.</p>
       </div>
-      <form class="auth-form" method="post" @submit.prevent="submitLoginForm" @keyup="isFormValid">
+      <form id="form" method="post" @submit.prevent="submitLoginForm" @keyup="isFormValid">
         <!-- INPUT - Email -->
         <div class="form-group" :class="{ success: !$v.user.email.$invalid }">
           <input
-            :type="'email'"
-            name="user.email"
+            :type="email"
+            id="email"
+            name="email"
             v-model.trim="$v.user.email.$model"
             required
             @keyup="debounce('email')"
@@ -26,11 +27,15 @@
         <!-- INPUT - Password -->
         <div
           class="form-group"
-          :class="{ success: !$v.user.password.$invalid, shake: displayError }"
+          :class="{
+            success: !$v.user.password.$invalid,
+            shake: displayError,
+          }"
         >
           <input
             :type="showPassword ? 'text' : 'password'"
-            name="user.password"
+            id="password"
+            name="password"
             v-model.trim="$v.user.password.$model"
             required
             @keyup="debounce('password')"
@@ -52,7 +57,13 @@
           </div>
         </div>
 
-        <button type="submit" class="gradientBtn" :disabled="submitLoginForm" name="connexion">
+        <button
+          type="submit"
+          class="gradientBtn"
+          id="submit-btn"
+          :disabled="submitLoginForm"
+          name="connexion"
+        >
           Se connecter
         </button>
       </form>
@@ -66,7 +77,7 @@
 </template>
 
 <script>
-// IMPORTS
+//IMPORTS
 import { mapState, mapGetters } from "vuex";
 import TitleLogo from "../components/TitleLogo.vue";
 
@@ -82,7 +93,7 @@ import {
   hasSpecialCharacter,
 } from "../validators/password";
 
-// EXPORTS
+//EXPORTS
 export default {
   name: "Signup",
   components: {
@@ -115,7 +126,7 @@ export default {
       },
       password: {
         required,
-        minLength,
+        minLength: minLength(8),
         hasNumber,
         hasLowercaseLetter,
         hasCapitalcaseLetter,
@@ -129,6 +140,7 @@ export default {
       this.$v.$touch();
       !this.$v.$invalid ? (submitBtn.disabled = false) : (submitBtn.disabled = true);
     },
+
     debounce: _.debounce(function (inputName) {
       this.errors[inputName] = this.$v.user[inputName].$error;
 
@@ -145,7 +157,7 @@ export default {
 
     errorAnimation() {
       this.showErrorLogin = true;
-      const errorLoginMsg = document.querySelector(".error-login p");
+      const errorLoginMsg = document.querySelector(".errorLogin p");
       errorLoginMsg.classList.add("shake");
 
       setTimeout(() => {
@@ -158,6 +170,15 @@ export default {
       if (this.$v.$invalid) {
         return;
       }
+      // http({
+      //   method: "post",
+      //   url: "auth/login",
+      //   withCredentials: false,
+      //   data: {
+      //     email: this.$v.user.email.$model,
+      //     password: this.$v.user.password.$model,
+      //   },
+      // })
       http
         .post("auth/login", {
           email: this.$v.user.email.$model,
